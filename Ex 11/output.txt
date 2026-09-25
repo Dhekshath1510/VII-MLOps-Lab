@@ -1,0 +1,30 @@
+FastAPI Serving App with Integration Tests
+===========================================
+
+Application:
+FastAPI ML serving application created successfully.
+
+Endpoints:
+1. /predict
+2. /health
+3. /model-info
+
+Input Validation:
+Pydantic schema implemented successfully.
+
+Prediction:
+Prediction and confidence returned successfully.
+
+Integration Tests:
+Health endpoint       - PASSED
+Model-info endpoint   - PASSED
+Prediction endpoint   - PASSED
+
+Testing Framework:
+pytest + httpx.AsyncClient
+
+Docker:
+Application and integration tests executed inside Docker.
+
+Result:
+All integration tests passed successfully.
