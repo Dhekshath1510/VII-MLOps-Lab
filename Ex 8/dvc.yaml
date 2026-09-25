@@ -1,0 +1,27 @@
+stages:
+
+  prepare:
+    cmd: python code/pipeline.py prepare
+    deps:
+      - code/pipeline.py
+      - data/wine.csv
+    outs:
+      - data/processed.csv
+
+  train:
+    cmd: python code/pipeline.py train
+    deps:
+      - code/pipeline.py
+      - data/processed.csv
+    outs:
+      - model/model.pkl
+
+  evaluate:
+    cmd: python code/pipeline.py evaluate
+    deps:
+      - code/pipeline.py
+      - model/model.pkl
+      - data/processed.csv
+    metrics:
+      - metrics.json:
+          cache: false

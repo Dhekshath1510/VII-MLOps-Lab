@@ -1,0 +1,24 @@
+DVC Pipeline with Metric Versioning
+===================================
+
+Pipeline Stages:
+1. Prepare
+2. Train
+3. Evaluate
+
+Dataset Version 1:
+Pipeline executed successfully.
+Evaluation metric stored in metrics.json.
+
+Dataset Version 2:
+Dataset was modified and the pipeline was reproduced
+using dvc repro.
+
+Metric Version Comparison:
+dvc metrics diff was used to compare the evaluation
+metric between the two dataset versions.
+
+Result:
+The DVC pipeline was successfully created and executed.
+Git and DVC were used for dataset versioning and
+dvc metrics diff was used to identify metric changes.
