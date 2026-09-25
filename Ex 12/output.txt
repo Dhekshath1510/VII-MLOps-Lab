@@ -1,0 +1,32 @@
+End-to-End ML CI/CD with GitHub Actions
+=======================================
+
+Pipeline Jobs:
+
+1. Data Validation
+   Status: PASSED
+
+2. Train and Evaluate
+   F1 Score Gate: >= 0.85
+   Status: PASSED
+
+3. Build Docker
+   Docker image built successfully.
+   Image tagged using Git SHA.
+
+4. Deploy Staging
+   Kubernetes deployment applied successfully.
+
+Job Dependencies:
+Data Validation
+       ↓
+Train and Evaluate
+       ↓
+Build Docker
+       ↓
+Deploy Staging
+
+Result:
+The complete ML CI/CD pipeline was successfully
+configured using GitHub Actions with sequential
+dependency gates.

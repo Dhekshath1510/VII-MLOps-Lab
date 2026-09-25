@@ -1,0 +1,126 @@
+name: End-to-End ML CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  # -------------------------------------------------------
+  # Job 1: Data Validation
+  # -------------------------------------------------------
+
+  data-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          pip install pandas great_expectations
+
+      - name: Validate Dataset
+        run: |
+          python -c "
+          import pandas as pd
+          df = pd.read_csv('data/wine.csv')
+          assert len(df) > 0
+          assert 'quality' in df.columns
+          print('Data validation passed')
+          "
+
+
+  # -------------------------------------------------------
+  # Job 2: Train and Evaluate
+  # -------------------------------------------------------
+
+  train-and-evaluate:
+    needs: data-validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          pip install pandas scikit-learn
+
+      - name: Train and Evaluate Model
+        run: |
+          python code/train.py
+
+      - name: F1 Score Gate
+        run: |
+          python -c "
+          import json
+
+          with open('metrics.json') as f:
+              metrics = json.load(f)
+
+          f1 = metrics['f1_score']
+
+          print('F1 Score:', f1)
+
+          if f1 < 0.85:
+              raise SystemExit('F1 gate failed')
+
+          print('F1 gate passed')
+          "
+
+
+  # -------------------------------------------------------
+  # Job 3: Build Docker Image
+  # -------------------------------------------------------
+
+  build-docker:
+    needs: train-and-evaluate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t ml-model:${{ github.sha }} .
+
+      - name: Display Image
+        run: |
+          docker images
+
+
+  # -------------------------------------------------------
+  # Job 4: Deploy to Staging
+  # -------------------------------------------------------
+
+  deploy-staging:
+    needs: build-docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: latest
+
+      - name: Apply Kubernetes Deployment
+        run: |
+          kubectl apply -f k8s/deployment.yaml
