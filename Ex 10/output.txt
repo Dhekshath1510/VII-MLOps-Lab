@@ -1,0 +1,30 @@
+Production-Ready ML Docker Image
+================================
+
+Docker Image:
+wine-quality-api
+
+Base Image:
+python:3.11-slim
+
+Build:
+Docker image built successfully.
+
+Container:
+Container started successfully on port 8000.
+
+Health Check:
+PASSED
+
+API:
+FastAPI application running successfully.
+
+Prediction:
+Prediction request tested successfully using curl.
+
+Docker Hub:
+Image tagged and pushed successfully.
+
+Result:
+Production-ready ML Docker image was successfully
+built, executed, health-checked, and tested.
