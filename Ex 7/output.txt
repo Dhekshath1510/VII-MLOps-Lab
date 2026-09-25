@@ -1,0 +1,32 @@
+MLflow Multi-Model Experiment Tracking
+======================================
+
+Dataset: Wine Quality Dataset
+
+Models Trained:
+1. Logistic Regression
+2. Random Forest
+3. XGBoost
+
+Metrics Logged:
+- Accuracy
+- F1 Score
+- ROC-AUC
+
+Artifacts Logged:
+- Confusion Matrix - Logistic Regression
+- Confusion Matrix - Random Forest
+- Confusion Matrix - XGBoost
+
+MLflow Experiment:
+Wine_Quality_Multi_Model_Tracking
+
+Model comparison completed successfully.
+
+Best Model:
+Selected programmatically using MLflow Client API
+based on the highest ROC-AUC score.
+
+Result:
+All three models were successfully trained and
+tracked using MLflow.
